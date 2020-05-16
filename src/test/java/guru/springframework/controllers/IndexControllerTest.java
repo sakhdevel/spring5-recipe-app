@@ -22,31 +22,24 @@ public class IndexControllerTest {
     @Mock
     Model model;
 
-    IndexController indexController;
+    IndexController controller;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        indexController = new IndexController(recipeService);
+        controller = new IndexController(recipeService);
     }
 
     @Test
     public void getIndexPage() {
-        Recipe recipe = new Recipe();
-        Set<Recipe> recipes = new HashSet<>();
-        recipes.add(recipe);
+        String viewName = controller.getIndexPage(model);
 
-        when(recipeService.getRecipes())
-            .thenReturn(recipes);
+        assertEquals("index", viewName);
 
-        when(model.addAttribute("recipes", recipes))
-            .thenReturn(model);
-
-        String actual = indexController.getIndexPage(model);
-        assertEquals("index", actual);
-
+        verify(recipeService, times(1))
+            .getRecipes();
         verify(model, times(1))
-            .addAttribute("recipes", recipes);
+            .addAttribute(eq("recipes"), anySet());
     }
 }
