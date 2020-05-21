@@ -34,7 +34,7 @@ public class UnitOfMeasureRepositoryIT {
 
     @Test
 //    @DirtiesContext //Use it if you want to clean context before this test
-    public void findByDescriptionCup() {
+    public void findByDescriptionCup() throws Exception {
         Optional<UnitOfMeasure> uomOptional =
             unitOfMeasureRepository.findByDescription("Cup");
 
