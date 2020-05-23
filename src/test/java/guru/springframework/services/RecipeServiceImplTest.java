@@ -84,8 +84,7 @@ public class RecipeServiceImplTest {
         HashSet receipesData = new HashSet();
         receipesData.add(recipe);
 
-        //when(recipeService.getRecipes()).thenReturn(receipesData);
-        when(recipeRepository.findAll()).thenReturn(receipesData);
+        when(recipeService.getRecipes()).thenReturn(receipesData);
 
         Set<Recipe> recipes = recipeService.getRecipes();
 
@@ -98,7 +97,7 @@ public class RecipeServiceImplTest {
     public void testDeleteById() throws Exception {
 
         //given
-        Long idToDelete = 2L;
+        Long idToDelete = Long.valueOf(2L);
 
         //when
         recipeService.deleteById(idToDelete);
