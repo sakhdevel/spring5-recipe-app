@@ -8,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
-        log.debug("sakhd: loading bootstrap data");
+        log.debug("Loading Bootstrap Data");
     }
 
     private List<Recipe> getRecipes() {
@@ -85,7 +85,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         UnitOfMeasure tableSpoonUom = tableSpoonUomOptional.get();
         UnitOfMeasure teapoonUom = tableSpoonUomOptional.get();
         UnitOfMeasure dashUom = dashUomOptional.get();
-        UnitOfMeasure pintUom = pintUomOptional.get();
+        UnitOfMeasure pintUom = dashUomOptional.get();
         UnitOfMeasure cupsUom = cupsUomOptional.get();
 
         //get Categories
@@ -109,7 +109,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.setDescription("Perfect Guacamole");
         guacRecipe.setPrepTime(10);
         guacRecipe.setCookTime(0);
-        guacRecipe.setServings(4);
         guacRecipe.setDifficulty(Difficulty.EASY);
         guacRecipe.setDirections("1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
                 "\n" +
@@ -135,6 +134,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         guacRecipe.setNotes(guacNotes);
 
+        //very redundent - could add helper method, and make this simpler
         guacRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
         guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), teapoonUom));
         guacRecipe.addIngredient(new Ingredient("fresh lime juice or lemon juice", new BigDecimal(2), tableSpoonUom));
@@ -147,8 +147,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.getCategories().add(americanCategory);
         guacRecipe.getCategories().add(mexicanCategory);
 
-        guacRecipe.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole");
-        guacRecipe.setSource("Simply recipes");
+        guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
+        guacRecipe.setServings(4);
+        guacRecipe.setSource("Simply Recipes");
 
         //add to return list
         recipes.add(guacRecipe);
@@ -207,6 +208,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.getCategories().add(americanCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
+
+        tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
+        tacosRecipe.setServings(4);
+        tacosRecipe.setSource("Simply Recipes");
 
         recipes.add(tacosRecipe);
         return recipes;
